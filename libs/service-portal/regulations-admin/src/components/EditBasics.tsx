@@ -16,12 +16,12 @@ import {
 import { useIntl } from 'react-intl'
 import { EditorInput } from './EditorInput'
 import { editorMsgs as msg } from '../messages'
-import { HTMLText } from '@island.is/regulations'
+import { HTMLText, Kennitala } from '@island.is/regulations'
 import { StepComponent } from '../state/useDraftingState'
 import { RegDraftFormSimpleProps } from '../state/types'
 import { getMinDate, getNextWorkday } from '../utils'
 import { Appendixes, AppendixStateItem } from './Appendixes'
-// import { RegulationDraftId } from '@island.is/regulations/admin'
+import { AuthorsDisplaySelect } from './AuthorsDisplaySelect'
 
 type WrapProps = {
   legend?: string
@@ -46,7 +46,7 @@ const Wrap = (props: WrapProps) => (
 
 export const EditBasics: StepComponent = (props) => {
   const t = useIntl().formatMessage
-  const { draft, actions } = props
+  const { draft, actions, userInfo, new: newDraft } = props
 
   const [fastTrack, setFastTrack] = useState(false)
   const [appendixes, setAppendixes] = useState(
@@ -58,10 +58,24 @@ export const EditBasics: StepComponent = (props) => {
 
   const onAnyInputChange = useCallback(
     (data: { name: RegDraftFormSimpleProps; value: string | Date }) => {
-      actions.updateState({ ...data })
+      actions.updateProp({ ...data })
     },
     [actions],
   )
+
+  useEffect(() => {
+    if (newDraft && userInfo.profile.name) {
+      actions.updateProp({
+        name: 'authors',
+        value: [
+          {
+            authorId: userInfo.profile.nationalId,
+            name: userInfo.profile.name,
+          },
+        ],
+      })
+    }
+  }, [])
 
   const fastTrackDate = fastTrack ? getNextWorkday(new Date()) : null
   const selectedDate = draft.idealPublishDate?.value
@@ -104,6 +118,31 @@ export const EditBasics: StepComponent = (props) => {
             })
           }
         />
+      </Wrap>
+
+      <Wrap>
+        <Box marginTop={2} marginBottom={3}>
+          <AuthorsDisplaySelect
+            authors={[...draft.authors.value]}
+            getValues={(id: Kennitala, name: string) =>
+              actions.updateProp({
+                name: 'authors',
+                value: [
+                  ...draft.authors.value,
+                  { authorId: id, name: name, local: true },
+                ],
+              })
+            }
+            removeItem={(id) =>
+              actions.updateProp({
+                name: 'authors',
+                value: draft.authors.value.filter(
+                  (item) => item.authorId !== id,
+                ),
+              })
+            }
+          />
+        </Box>
       </Wrap>
 
       <Wrap>

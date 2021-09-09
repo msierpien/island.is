@@ -55,6 +55,10 @@ export class EditDraftBody {
   @Field(() => [String], { nullable: true })
   @IsOptional()
   law_chapters?: string[]
+
+  @Field(() => [String], { nullable: true })
+  @IsOptional()
+  authors?: string[]
 }
 
 @InputType()

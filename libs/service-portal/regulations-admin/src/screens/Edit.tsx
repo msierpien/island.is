@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { FC, Fragment } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Box, SkeletonLoader, Text } from '@island.is/island-ui/core'
@@ -16,7 +16,12 @@ import {
   StepComponent,
 } from '../state/useDraftingState'
 import { DraftIdFromParam } from '../state/types'
+import { User } from 'oidc-client'
 import { MessageDescriptor } from 'react-intl'
+
+interface Props {
+  userInfo: User
+}
 // import { gql, useQuery } from '@apollo/client'
 // import { Query } from '@island.is/api/schema'
 
@@ -81,7 +86,7 @@ const assertDraftId = (maybeId: string): DraftIdFromParam => {
 
 // ---------------------------------------------------------------------------
 
-const Edit = () => {
+const Edit: FC<Props> = ({ userInfo }) => {
   useNamespaces('ap.regulations-admin')
   const t = useLocale().formatMessage
   const params = useParams<{ id: string; step?: string }>()
@@ -111,7 +116,12 @@ const Edit = () => {
       </Box>
 
       {draft ? (
-        <step.Component actions={actions} new={id === 'new'} draft={draft} />
+        <step.Component
+          actions={actions}
+          userInfo={userInfo}
+          new={id === 'new'}
+          draft={draft}
+        />
       ) : (
         <SkeletonLoader height={120} />
       )}

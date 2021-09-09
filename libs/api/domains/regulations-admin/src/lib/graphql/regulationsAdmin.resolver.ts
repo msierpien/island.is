@@ -62,13 +62,19 @@ export class RegulationsAdminResolver {
       : null
 
     const authors: Author[] = []
-    regulation?.authors?.forEach(async (nationalId) => {
-      const author = await this.regulationsAdminApiService.getAuthorInfo(
-        nationalId,
-        authorization,
-      )
-      author && authors.push(author)
-    })
+    if (regulation.authors) {
+      for await (const nationalId of regulation.authors) {
+        const author = await this.regulationsAdminApiService.getAuthorInfo(
+          nationalId,
+          authorization,
+        )
+
+        authors.push({
+          authorId: nationalId,
+          name: author?.name ?? '',
+        })
+      }
+    }
 
     const impacts: (DraftRegulationCancel | DraftRegulationChange)[] = []
     regulation.changes?.forEach((change) => {

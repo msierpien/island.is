@@ -112,7 +112,7 @@ export const EditMeta: StepComponent = (props) => {
           errorMessage={t(msg.requiredFieldError)}
           hasError={!!draft.ministry?.error}
           onChange={(option) =>
-            actions.updateState({
+            actions.updateProp({
               name: 'ministry',
               value: (option as Option).value as MinistrySlug,
             })
@@ -145,7 +145,7 @@ export const EditMeta: StepComponent = (props) => {
           errorMessage={t(msg.requiredFieldError)}
           hasError={!!draft.type.error}
           onChange={(typeOption) =>
-            actions.updateState({
+            actions.updateProp({
               name: 'type',
               value: (typeOption as Option).value as RegulationType,
             })
@@ -162,7 +162,7 @@ export const EditMeta: StepComponent = (props) => {
           errorMessage={t(msg.requiredFieldError)}
           hasError={!!draft.signatureDate?.error}
           handleChange={(date: Date) =>
-            actions.updateState({
+            actions.updateProp({
               name: 'signatureDate',
               value: date,
             })
@@ -180,7 +180,7 @@ export const EditMeta: StepComponent = (props) => {
           errorMessage={t(msg.requiredFieldError)}
           hasError={!!draft.effectiveDate.error}
           handleChange={(date: Date) =>
-            actions.updateState({
+            actions.updateProp({
               name: 'effectiveDate',
               value: date,
             })

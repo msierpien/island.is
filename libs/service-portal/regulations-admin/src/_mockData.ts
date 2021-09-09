@@ -183,3 +183,37 @@ export const mockRegulationOptions: RegulationList = [
     migrated: false,
   },
 ]
+
+// ---------------------------------------------------------------------------
+
+export const mockAuthorsAvailable: {
+  name: string
+  id: string
+  jobTitle: string
+  email: string
+}[] = [
+  {
+    name: 'Gervimaður Gervimannsson',
+    id: '0000000000',
+    jobTitle: 'Atvinna 1',
+    email: 'test@test.com',
+  },
+  {
+    name: 'Gervimaður Gervimannsson 2',
+    id: '1111111111',
+    jobTitle: 'Atvinna 2',
+    email: 'test2@test.com',
+  },
+  {
+    name: 'Gervikona Gervikonudóttir',
+    id: '3333333333',
+    jobTitle: 'Atvinna 4',
+    email: 'test4@test.com',
+  },
+  {
+    name: 'Gervikona Gervikonudóttir 2',
+    id: '4444444444',
+    jobTitle: 'Atvinna 5',
+    email: 'test5@test.com',
+  },
+]

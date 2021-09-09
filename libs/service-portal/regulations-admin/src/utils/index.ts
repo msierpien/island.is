@@ -5,6 +5,7 @@ import {
   toISODate,
   HTMLText,
   MinistrySlug,
+  Kennitala,
 } from '@island.is/regulations'
 import startOfTomorrow from 'date-fns/startOfTomorrow'
 import { startOfDay, addDays, set } from 'date-fns/esm'
@@ -215,4 +216,18 @@ export const getInputFieldsWithErrors = (
     }
   }
   return undefined
+}
+
+export const getAuthorArray = (
+  draft: RegDraftForm | undefined,
+  userId: Kennitala | undefined,
+) => {
+  if (draft) {
+    const storedAuthorIds = draft?.authors?.value?.map((item) => item.authorId)
+    if (userId && !storedAuthorIds.includes(userId)) {
+      storedAuthorIds.push(userId)
+    }
+    return storedAuthorIds
+  }
+  return []
 }

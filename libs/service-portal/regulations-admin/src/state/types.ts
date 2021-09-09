@@ -4,6 +4,7 @@ import {
   DraftRegulationChange,
   RegulationDraft,
   RegulationDraftId,
+  Author,
 } from '@island.is/regulations/admin'
 import {
   HTMLText,
@@ -56,6 +57,8 @@ export type CancelDraftFields = Readonly<
   Pick<DraftRegulationCancel, 'id' | 'type' | 'name'>
 > & { date: DraftField<Date> }
 
+export type AuthorState = Author & { local?: boolean }
+
 export type RegDraftForm = BodyDraftFields & {
   idealPublishDate: DraftField<Date | undefined>
   signatureDate: DraftField<Date | undefined>
@@ -68,7 +71,7 @@ export type RegDraftForm = BodyDraftFields & {
 
   readonly draftingStatus: DraftingStatus // non-editable except via saveStatus or propose actions
   draftingNotes: HtmlDraftField
-  authors: DraftField<ReadonlyArray<Kennitala>>
+  authors: DraftField<ReadonlyArray<AuthorState>>
 
   id: RegulationDraft['id']
   fastTrack: RegulationDraft['fastTrack']

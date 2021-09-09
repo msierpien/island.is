@@ -1,5 +1,10 @@
 import { useMutation, gql } from '@apollo/client'
-import { HTMLText, LawChapterSlug, PlainText } from '@island.is/regulations'
+import {
+  HTMLText,
+  Kennitala,
+  LawChapterSlug,
+  PlainText,
+} from '@island.is/regulations'
 import { useRegulationDraftQuery } from '@island.is/service-portal/graphql'
 import { useAuth } from '@island.is/auth/react'
 import { ServicePortalPath } from '@island.is/service-portal/core'
@@ -7,7 +12,11 @@ import { FC, Reducer, useEffect, useMemo, useReducer } from 'react'
 import { produce, setAutoFreeze } from 'immer'
 import { useHistory, generatePath } from 'react-router-dom'
 import { Step } from '../types'
-import { getAllGuessableValues, getInputFieldsWithErrors } from '../utils'
+import {
+  getAllGuessableValues,
+  getInputFieldsWithErrors,
+  getAuthorArray,
+} from '../utils'
 import { mockSave } from '../_mockData'
 import { RegulationsAdminScope } from '@island.is/auth/scopes'
 import {
@@ -26,6 +35,7 @@ import {
   ActionName,
 } from './types'
 import { uuid } from 'uuidv4'
+import { User } from 'oidc-client'
 
 export const CREATE_DRAFT_REGULATION_MUTATION = gql`
   mutation CreateDraftRegulationMutation($input: CreateDraftRegulationInput!) {
@@ -114,7 +124,7 @@ const makeDraftForm = (
 
     draftingNotes: fHtml(draft.draftingNotes),
     draftingStatus: draft.draftingStatus,
-    authors: f(draft.authors?.map((author) => author.authorId)),
+    authors: f(draft.authors),
   }
   return form
 }
@@ -278,6 +288,7 @@ export const useDraftingState = (draftId: DraftIdFromParam, stepName: Step) => {
   const history = useHistory()
   const isEditor =
     useAuth().userInfo?.scopes?.includes(RegulationsAdminScope.manage) || false
+  const userNationalId = useAuth().userInfo?.profile.nationalId
 
   if (stepName === 'review' && !isEditor) {
     throw new Error()
@@ -408,8 +419,7 @@ export const useDraftingState = (draftId: DraftIdFromParam, stepName: Step) => {
             })
           }
         : () => undefined,
-      // FIXME: rename to updateProp??
-      updateState: <Prop extends RegDraftFormSimpleProps>(data: {
+      updateProp: <Prop extends RegDraftFormSimpleProps>(data: {
         name: Prop
         value: RegDraftForm[Prop]['value']
       }) => {
@@ -469,11 +479,13 @@ export const useDraftingState = (draftId: DraftIdFromParam, stepName: Step) => {
                     signature_date: state.draft?.signatureDate?.value,
                     effective_date: state.draft?.effectiveDate?.value,
                     type: state.draft?.type?.value,
+                    authors: getAuthorArray(
+                      state.draft,
+                      userNationalId as Kennitala,
+                    ),
                   },
                 },
               },
-            }).then((res) => {
-              console.log('!!DRAFT UPDATED!! ', res)
             })
           }
         : () => undefined,
@@ -511,5 +523,6 @@ export const useDraftingState = (draftId: DraftIdFromParam, stepName: Step) => {
 export type StepComponent = (props: {
   draft: RegDraftForm
   new?: boolean
+  userInfo: User
   actions: ReturnType<typeof useDraftingState>['actions'] // FIXME: Ick! Ack!
 }) => ReturnType<FC>

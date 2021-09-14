@@ -15,6 +15,7 @@ api:
     ENDORSEMENT_SYSTEM_BASE_API_URL: 'http://web-endorsement-system-api.endorsement-system.svc.cluster.local'
     FILE_DOWNLOAD_BUCKET: 'island-is-dev-download-cache-api'
     FILE_STORAGE_UPLOAD_BUCKET: 'island-is-dev-upload-api'
+    GQL_PLAYGROUND_ENABLED: 'true'
     ICELANDIC_NAMES_REGISTRY_BACKEND_URL: 'http://web-icelandic-names-registry-backend.icelandic-names-registry.svc.cluster.local'
     NODE_OPTIONS: '--max-old-space-size=464'
     PARTY_LETTER_REGISTRY_BASE_API_URL: 'http://web-party-letter-registry-api.party-letter-registry.svc.cluster.local'

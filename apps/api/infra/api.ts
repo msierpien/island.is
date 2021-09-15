@@ -172,6 +172,7 @@ export const serviceSetup = (services: {
       VMST_API_KEY: '/k8s/vmst-client/VMST_API_KEY',
       SYSLUMENN_USERNAME: '/k8s/api/SYSLUMENN_USERNAME',
       SYSLUMENN_PASSWORD: '/k8s/api/SYSLUMENN_PASSWORD',
+      HI_I_AM_DAVID: '/k8s/api/HI_I_AM_DAVID',
       DOCUMENT_PROVIDER_ADMINS:
         '/k8s/documentprovider/DOCUMENT_PROVIDER_ADMINS',
       XROAD_FINANCES_PATH: '/k8s/service-portal/XROAD_FINANCES_PATH',

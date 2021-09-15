@@ -7,6 +7,7 @@ import { Envs } from './environments'
 import { Services, FeatureDeploymentServices } from './uber-charts/islandis'
 import { EnvironmentServices } from './dsl/types/charts'
 import { ServiceHelm } from './dsl/types/output-types'
+import { OpsEnv } from './dsl/types/input-types'
 const { hideBin } = require('yargs/helpers')
 
 type ChartName = 'islandis'
@@ -18,6 +19,7 @@ const charts: { [name in ChartName]: EnvironmentServices } = {
 interface Arguments {
   feature: string
   images: string
+  env: OpsEnv
   chart: ChartName
   output?: string
   jobImage?: string
@@ -53,7 +55,7 @@ const writeToOutput = async (data: string, output?: string) => {
 const parseArguments = (argv: Arguments) => {
   const feature = argv.feature
   const images = argv.images.split(',') // Docker images that have changed
-  const env = 'dev'
+  const env = argv.env
   const chart = argv.chart as ChartName
   const output = argv.output as string
 
@@ -64,7 +66,7 @@ const parseArguments = (argv: Arguments) => {
   const affectedServices = habitat
     .concat(FeatureDeploymentServices)
     .filter((h) => images?.includes(h.serviceDef.image ?? h.serviceDef.name))
-  return { ch, habitat, affectedServices }
+  return { ch, habitat, affectedServices, env }
 }
 
 const buildIngressComment = (data: ServiceHelm[]): string =>
@@ -91,8 +93,9 @@ yargs(hideBin(process.argv))
     'get helm values file',
     (yargs) => {},
     async (argv: Arguments) => {
-      const { ch, habitat, affectedServices } = parseArguments(argv)
+      const { ch, habitat, affectedServices, env } = parseArguments(argv)
       const featureYaml = generateYamlForFeature(
+        env,
         ch,
         habitat,
         ...affectedServices,
@@ -105,8 +108,9 @@ yargs(hideBin(process.argv))
     'get helm values file',
     (yargs) => {},
     async (argv: Arguments) => {
-      const { ch, habitat, affectedServices } = parseArguments(argv)
+      const { ch, habitat, affectedServices, env } = parseArguments(argv)
       const featureYaml = generateYamlForFeature(
+        env,
         ch,
         habitat,
         ...affectedServices,
@@ -144,6 +148,13 @@ yargs(hideBin(process.argv))
     images: {
       type: 'string',
       demandOption: true,
+      description:
+        'List of comma separated Docker image names that have changed',
+    },
+    env: {
+      type: 'string',
+      choices: ['dev', 'staging', 'prod'],
+      default: 'dev',
       description:
         'List of comma separated Docker image names that have changed',
     },

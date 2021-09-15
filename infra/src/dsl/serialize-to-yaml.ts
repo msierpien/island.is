@@ -1,6 +1,6 @@
 import { DEFAULT_FULL_SCHEMA, dump, load } from 'js-yaml'
 import { postgresIdentifier, serializeService } from './map-to-values'
-import { PostgresInfo, Service } from './types/input-types'
+import { OpsEnv, PostgresInfo, Service } from './types/input-types'
 import { UberChart } from './uber-chart'
 import { ValueFile, FeatureKubeJob } from './types/output-types'
 
@@ -105,6 +105,7 @@ export const getDependantServices = (
 }
 
 export const generateYamlForFeature = (
+  env: OpsEnv,
   uberChart: UberChart,
   habitat: Service[],
   ...services: Service[]
@@ -123,10 +124,12 @@ export const generateYamlForFeature = (
     })
     featureSpecificServices.forEach((s) => {
       Object.entries(s.serviceDef.ingress).forEach(([name, ingress]) => {
-        if (!Array.isArray(ingress.host.dev)) {
-          ingress.host.dev = [ingress.host.dev]
+        if (!Array.isArray(ingress.host[env])) {
+          ingress.host[env] = [ingress.host[env] as string]
         }
-        ingress.host.dev = ingress.host.dev.map((host) => `${feature}-${host}`)
+        ingress.host[env] = (ingress.host[env] as string[]).map(
+          (host) => `${feature}-${host}`,
+        )
       })
     })
     featureSpecificServices.forEach((s) => {

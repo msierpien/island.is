@@ -69,6 +69,9 @@ export class VerifyPkPassInput {
 
   @Field(() => String)
   data!: string
+
+  @Field(() => String)
+  nationalId!: string
 }
 
 @UseGuards(IdsUserGuard, ScopesGuard)
@@ -142,6 +145,7 @@ export class MainResolver {
       locale,
       input.licenseType,
       input.data,
+      input.nationalId,
     )
 
     return verification

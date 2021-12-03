@@ -17,6 +17,7 @@ import {
 } from './modules'
 import { SequelizeConfigService } from './sequelizeConfig.service'
 import { environment } from '../environments'
+import { RecyclingUserModule } from './modules/recyclingUser/recyclingUser.module';
 
 const debug = process.env.NODE_ENV === 'development'
 const playground = debug || process.env.GQL_PLAYGROUND_ENABLED === 'true'
@@ -44,6 +45,7 @@ const autoSchemaFile = environment.production
     RecyclingPartnerModule,
     VehicleModule,
     VehicleOwnerModule,
+    RecyclingUserModule,
   ],
 })
 export class AppModule {}

@@ -17,6 +17,7 @@ export class RecyclingUserModel extends Model<RecyclingUserModel> {
   @Column({
     type: DataType.STRING,
     primaryKey: true,
+    field: 'national_id',
   })
   nationalId: string
 
@@ -47,11 +48,15 @@ export class RecyclingUserModel extends Model<RecyclingUserModel> {
 
   @Field()
   @CreatedAt
-  @Column
+  @Column({
+    field: 'created_at',
+  })
   createdAt: Date
 
   @Field()
   @UpdatedAt
-  @Column
+  @Column({
+    field: 'updated_at',
+  })
   updatedAt: Date
 }

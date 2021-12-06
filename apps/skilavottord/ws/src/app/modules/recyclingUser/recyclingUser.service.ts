@@ -46,4 +46,21 @@ export class RecyclingUserService {
       this.logger.error('error finding one recyclingUsers:' + error)
     }
   }
+
+  /*
+   *
+   */
+  async createRecyclingUser(
+    recyclingUser: RecyclingUserModel,
+  ): Promise<boolean> {
+    this.logger.info(
+      'Creating recyclingUser:' + JSON.stringify(recyclingUser, null, 2),
+    )
+    try {
+      await recyclingUser.save()
+      return true
+    } catch (error) {
+      this.logger.error('error creating recyclingUser:' + error)
+    }
+  }
 }

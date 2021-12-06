@@ -44,8 +44,18 @@ describe('skilavottordUserService', () => {
       let res = await recyclingUserServie.findAll()
       expect(true).toEqual(true)
     })
-    it('get one recycling users', async () => {
+    it('get one recycling user', async () => {
       let res = await recyclingUserServie.findOne('7777777777')
+      expect(true).toEqual(true)
+    })
+    it('create recycling user', async () => {
+      let user = new RecyclingUserModel()
+      user.nationalId = '3333333333'
+      user.name = 'Jónas Jónsson'
+      user.role = 'citizen'
+      user.partnerid = '123'
+      user.active = true
+      let res = await recyclingUserServie.createRecyclingUser(user)
       expect(true).toEqual(true)
     })
   })

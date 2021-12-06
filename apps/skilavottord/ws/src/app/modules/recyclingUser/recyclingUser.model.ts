@@ -7,8 +7,7 @@ import {
   CreatedAt,
   UpdatedAt,
 } from 'sequelize-typescript'
-
-import { RecyclingRequestModel } from '../recyclingRequest'
+import { Role } from '../auth/auth.types'
 
 @ObjectType()
 @Table({ tableName: 'recycling_user' })
@@ -32,7 +31,7 @@ export class RecyclingUserModel extends Model<RecyclingUserModel> {
   @Column({
     type: DataType.STRING,
   })
-  role: string
+  role: Role
 
   @Field()
   @Column({

@@ -28,4 +28,22 @@ export class RecyclingUserService {
       this.logger.error('error finding all recyclingUsers:' + error)
     }
   }
+
+  /*
+   *
+   */
+  async findOne(nationalId: string): Promise<RecyclingUserModel> {
+    this.logger.info('find one recyclingUsers...')
+    try {
+      const res = await this.recyclingUserModel.findOne({
+        where: { nationalId: nationalId },
+      })
+      this.logger.info(
+        'findOne-recyclingUsers result:' + JSON.stringify(res, null, 2),
+      )
+      return res
+    } catch (error) {
+      this.logger.error('error finding one recyclingUsers:' + error)
+    }
+  }
 }

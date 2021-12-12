@@ -9,6 +9,7 @@ import {
   UpdateAccessControlInput,
 } from './accessControl.input'
 import { RecyclingPartnerModel } from '../recyclingPartner/recyclingPartner.model'
+import { access } from 'fs'
 
 @Injectable()
 export class AccessControlService {
@@ -20,13 +21,14 @@ export class AccessControlService {
 
   async findAll(): Promise<AccessControlModel[]> {
     this.logger.info('---- Starting findAll Access Controls ----')
-    const accesControlUsers = await AccessControlModel.findAll({
-      include: [
-        {
-          model: RecyclingPartnerModel,
-        },
-      ],
-    })
+    const accesControlUsers = await AccessControlModel.findAll()
+    // const accesControlUsers = await AccessControlModel.findAll({
+    //   include: [
+    //     {
+    //       model: RecyclingPartnerModel,
+    //     },
+    //   ],
+    // })
     this.logger.info(
       'findAll-AccessControl user result:' +
         JSON.stringify(accesControlUsers, null, 2),
@@ -36,13 +38,14 @@ export class AccessControlService {
 
   async findOne(nationalId: string): Promise<AccessControlModel> {
     this.logger.info('find one access user...')
+    // return await this.accessControlModel.findOne()
     return await this.accessControlModel.findOne({
       where: { nationalId: nationalId },
-      include: [
-        {
-          model: RecyclingPartnerModel,
-        },
-      ],
+      // include: [
+      //   {
+      //     model: RecyclingPartnerModel,
+      //   },
+      // ],
     })
   }
 
@@ -62,7 +65,11 @@ export class AccessControlService {
     input: CreateAccessControlInput,
   ): Promise<AccessControlModel> {
     this.logger.info('Creating Access:' + JSON.stringify(input, null, 2))
-    const accessUser = input as AccessControlModel
+    let accessUser = new AccessControlModel()
+    accessUser.nationalId = input.nationalId
+    accessUser.name = input.name
+    accessUser.partnerId = input.partnerId
+    accessUser.role = input.role
     return await accessUser.save()
   }
 
@@ -90,8 +97,11 @@ export class AccessControlService {
   // }
 
   async deleteAccess(input: DeleteAccessControlInput): Promise<Boolean> {
-    const accessUser = input as AccessControlModel
-    accessUser.destroy()
-    return true
+    const accessUser = await this.findOne(input.nationalId)
+    if (accessUser) {
+      accessUser.destroy()
+      return true
+    }
+    return false
   }
 }

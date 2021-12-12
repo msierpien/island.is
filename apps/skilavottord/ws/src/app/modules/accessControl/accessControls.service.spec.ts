@@ -10,7 +10,6 @@ import {
   DeleteAccessControlInput,
   UpdateAccessControlInput,
 } from './accessControl.input'
-import { access } from 'fs'
 
 describe('accessControlService', () => {
   let accessControlService: AccessControlService
@@ -63,7 +62,7 @@ describe('accessControlService', () => {
     })
     it('create access user', async () => {
       try {
-        let input = new UpdateAccessControlInput()
+        const input = new UpdateAccessControlInput()
         input.nationalId = '1111111111'
         input.name = 'Jónas Jónasson'
         input.role = Role.developer
@@ -81,7 +80,7 @@ describe('accessControlService', () => {
     })
     it('update one access user', async () => {
       try {
-        let input = new UpdateAccessControlInput()
+        const input = new UpdateAccessControlInput()
         input.nationalId = '1111111111'
         input.name = 'Jón Jónsson'
         input.role = Role.recyclingFund
@@ -96,7 +95,7 @@ describe('accessControlService', () => {
       }
     })
     it('remove user access', async () => {
-      let input = new DeleteAccessControlInput()
+      const input = new DeleteAccessControlInput()
       try {
         input.nationalId = '1111111111'
         const isDeleted = await accessControlService.deleteAccess(input)

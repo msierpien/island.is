@@ -8,8 +8,6 @@ import {
   DeleteAccessControlInput,
   UpdateAccessControlInput,
 } from './accessControl.input'
-import { RecyclingPartnerModel } from '../recyclingPartner/recyclingPartner.model'
-import { access } from 'fs'
 
 @Injectable()
 export class AccessControlService {
@@ -49,23 +47,11 @@ export class AccessControlService {
     })
   }
 
-  // async createAccess(
-  //   input: CreateAccessControlInput,
-  // ): Promise<AccessControlModel> {
-  //   // TODO replace mock data with actual db query
-  //   return Promise.resolve({
-  //     nationalId: '1234567890',
-  //     name: 'Gervimaður3',
-  //     role: Role.recyclingCompany,
-  //     partnerId: '9999999999',
-  //   })
-  // }
-
   async createAccess(
     input: CreateAccessControlInput,
   ): Promise<AccessControlModel> {
     this.logger.info('Creating Access:' + JSON.stringify(input, null, 2))
-    let accessUser = new AccessControlModel()
+    const accessUser = new AccessControlModel()
     accessUser.nationalId = input.nationalId
     accessUser.name = input.name
     accessUser.partnerId = input.partnerId
@@ -84,18 +70,6 @@ export class AccessControlService {
     return accessUser
   }
 
-  // async updateAccess(
-  //   input: UpdateAccessControlInput,
-  // ): Promise<AccessControlModel> {
-  //   // TODO replace mock data with actual db query
-  //   return Promise.resolve({
-  //     nationalId: '1234567890',
-  //     name: 'Gervimaður3',
-  //     role: Role.recyclingCompany,
-  //     partnerId: '9999999999',
-  //   })
-  // }
-
   async deleteAccess(input: DeleteAccessControlInput): Promise<Boolean> {
     const accessUser = await this.findOne(input.nationalId)
     if (accessUser) {
@@ -105,3 +79,27 @@ export class AccessControlService {
     return false
   }
 }
+
+// async createAccess(
+//   input: CreateAccessControlInput,
+// ): Promise<AccessControlModel> {
+//   // TODO replace mock data with actual db query
+//   return Promise.resolve({
+//     nationalId: '1234567890',
+//     name: 'Gervimaður3',
+//     role: Role.recyclingCompany,
+//     partnerId: '9999999999',
+//   })
+// }
+
+// async updateAccess(
+//   input: UpdateAccessControlInput,
+// ): Promise<AccessControlModel> {
+//   // TODO replace mock data with actual db query
+//   return Promise.resolve({
+//     nationalId: '1234567890',
+//     name: 'Gervimaður3',
+//     role: Role.recyclingCompany,
+//     partnerId: '9999999999',
+//   })
+// }

@@ -19,7 +19,7 @@ export class AccessControlService {
 
   async findAll(): Promise<AccessControlModel[]> {
     this.logger.info('---- Starting findAll Access Controls ----')
-    const accesControlUsers = await AccessControlModel.findAll()
+    const accessControls = await AccessControlModel.findAll()
     // const accesControlUsers = await AccessControlModel.findAll({
     //   include: [
     //     {
@@ -28,15 +28,14 @@ export class AccessControlService {
     //   ],
     // })
     this.logger.info(
-      'findAll-AccessControl user result:' +
-        JSON.stringify(accesControlUsers, null, 2),
+      'findAll-AccessControl user results:' +
+        JSON.stringify(accessControls, null, 2),
     )
-    return accesControlUsers
+    return accessControls
   }
 
   async findOne(nationalId: string): Promise<AccessControlModel> {
     this.logger.info('find one access user...')
-    // return await this.accessControlModel.findOne()
     return await this.accessControlModel.findOne({
       where: { nationalId: nationalId },
       // include: [

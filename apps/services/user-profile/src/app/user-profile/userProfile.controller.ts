@@ -77,6 +77,8 @@ export class UserProfileController {
         mode: 'token',
       },
     })
+    console.log(enhancedFetch)
+    return enhancedFetch
     try{
       const result = await enhancedFetch('http://localhost:3366/locked')
       return result.json()

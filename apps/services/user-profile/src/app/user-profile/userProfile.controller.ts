@@ -1,4 +1,4 @@
-import { IdsAuthGuard, User } from '@island.is/auth-nest-tools'
+import type { User } from '@island.is/auth-nest-tools'
 import {
   CurrentUser,
   IdsUserGuard,
@@ -44,9 +44,6 @@ import { UserProfile } from './userProfile.model'
 import { UserProfileService } from './userProfile.service'
 import { VerificationService } from './verification.service'
 
-import { createEnhancedFetch } from '@island.is/clients/middlewares'
-import { environment } from '../../environments'
-
 @UseGuards(IdsUserGuard, ScopesGuard)
 @ApiTags('User Profile')
 @Controller()
@@ -57,47 +54,26 @@ export class UserProfileController {
     private readonly auditService: AuditService,
   ) {}
 
-
- 
   @Scopes(UserProfileScope.read)
   @ApiSecurity('oauth2', [UserProfileScope.read])
-  @Get('asdf')
-  @ApiOkResponse({ type: UserProfile })
-
-  async asdf(
-   
-  ): Promise<any> {
-    const enhancedFetch = createEnhancedFetch({
-      name: 'my-fetch',
-      autoAuth: {
-        issuer: `${environment.auth.issuer}`,
-        clientId: process.env.NOTIFICATIONS_CLIENT_ID ?? '',
-        clientSecret: process.env.NOTIFICATIONS_CLIENT_SECRET ?? '',
-        scope: ["@island.is/user-profile:admin"],
-        mode: 'token',
-      },
-    })
-    try{
-      const result = await enhancedFetch('http://localhost:3366/locked')
-      return result.json()
-    }catch(e){
-      return e
-    }
-
-  }
-
-
-
-  @Scopes("@island.is/user-profile:admin")
-  @ApiSecurity('oauth2', ["@island.is/user-profile:admin"])
   @Get('userProfile/:nationalId')
+  @ApiParam({
+    name: 'nationalId',
+    type: String,
+    required: true,
+    description: 'The nationalId of the application to update.',
+    allowEmptyValue: false,
+  })
+  @ApiOkResponse({ type: UserProfile })
+  @Audit<UserProfile>({
+    resources: (profile) => profile.nationalId,
+  })
   async findOneByNationalId(
     @Param('nationalId')
     nationalId: string,
     @CurrentUser()
     user: User,
-  ): Promise<any> {
-    return nationalId
+  ): Promise<UserProfile> {
     if (nationalId != user.nationalId) {
       throw new ForbiddenException()
     }
@@ -419,25 +395,5 @@ export class UserProfileController {
     } else {
       return await this.userProfileService.deleteDeviceToken(body, user)
     }
-  }
-}
-
-@UseGuards(IdsAuthGuard, ScopesGuard)
-@ApiTags('User Profile')
-@Controller()
-export class UserProfile2Controller {
-  constructor(
-    private readonly userProfileService: UserProfileService,
-  ) {}
-
-
- 
-  @Scopes("@island.is/user-profile:admin")
-  @Get('locked')
-
-  async locked(
-   
-  ): Promise<any> {
-    return {"bob":true}
   }
 }

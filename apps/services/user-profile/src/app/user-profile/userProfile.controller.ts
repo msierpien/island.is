@@ -57,33 +57,41 @@ export class UserProfileController {
     private readonly auditService: AuditService,
   ) {}
 
+
+ 
   @Scopes(UserProfileScope.read)
   @ApiSecurity('oauth2', [UserProfileScope.read])
   @Get('asdf')
   @ApiOkResponse({ type: UserProfile })
-  async asdf(): Promise<any> {
+
+  async asdf(
+   
+  ): Promise<any> {
     const enhancedFetch = createEnhancedFetch({
       name: 'my-fetch',
       autoAuth: {
         issuer: `${environment.auth.issuer}`,
         clientId: process.env.NOTIFICATIONS_CLIENT_ID ?? '',
         clientSecret: process.env.NOTIFICATIONS_CLIENT_SECRET ?? '',
-        scope: ['@island.is/user-profile:admin'],
+        scope: ["@island.is/user-profile:admin"],
         mode: 'token',
       },
     })
     console.log(enhancedFetch)
     return enhancedFetch
-    try {
+    try{
       const result = await enhancedFetch('http://localhost:3366/locked')
       return result.json()
-    } catch (e) {
+    }catch(e){
       return e
     }
+
   }
 
-  @Scopes('@island.is/user-profile:admin')
-  @ApiSecurity('oauth2', ['@island.is/user-profile:admin'])
+
+
+  @Scopes("@island.is/user-profile:admin")
+  @ApiSecurity('oauth2', ["@island.is/user-profile:admin"])
   @Get('userProfile/:nationalId')
   async findOneByNationalId(
     @Param('nationalId')
@@ -420,11 +428,18 @@ export class UserProfileController {
 @ApiTags('User Profile')
 @Controller()
 export class UserProfile2Controller {
-  constructor(private readonly userProfileService: UserProfileService) {}
+  constructor(
+    private readonly userProfileService: UserProfileService,
+  ) {}
 
-  @Scopes('@island.is/user-profile:admin')
+
+ 
+  @Scopes("@island.is/user-profile:admin")
   @Get('locked')
-  async locked(): Promise<any> {
-    return { bob: true }
+
+  async locked(
+   
+  ): Promise<any> {
+    return {"bob":true}
   }
 }

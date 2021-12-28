@@ -11,7 +11,10 @@ import {
   UpdateRecyclingPartnerInput,
 } from './recyclingPartner.input'
 
-@Authorize({ roles: [Role.developer, Role.recyclingCompany] })
+@Authorize({
+  throwOnUnAuthorized: false,
+  roles: [Role.developer, Role.recyclingCompany],
+})
 @Resolver(() => RecyclingPartnerModel)
 export class RecyclingPartnerResolver {
   constructor(private recyclingPartnerService: RecyclingPartnerService) {}

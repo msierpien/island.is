@@ -2156,7 +2156,7 @@ export interface IProjectPageFields {
   sidebar: boolean
 
   /** Sidebar Links */
-  sidebarLinks?: ILinkGroup[] | undefined
+  sidebarLinks?: ILink[] | undefined
 
   /** Subtitle */
   subtitle?: string | undefined

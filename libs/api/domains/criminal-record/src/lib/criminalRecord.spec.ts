@@ -48,12 +48,11 @@ describe('CriminalRecordService', () => {
     })
 
     it('should throw an error', async () => {
+      expect.assertions(1)
+
       return await service
         .getCriminalRecord(MOCK_NATIONAL_ID_NOT_EXISTS)
-        .catch((e) => {
-          expect(e).toBeTruthy()
-          expect.assertions(1)
-        })
+        .catch((e) => expect(e).toBeTruthy())
     })
   })
 
@@ -65,12 +64,11 @@ describe('CriminalRecordService', () => {
     })
 
     it('should throw an error', async () => {
+      expect.assertions(1)
+
       return await service
         .validateCriminalRecord(MOCK_NATIONAL_ID_NOT_EXISTS)
-        .catch((e) => {
-          expect(e).toBeTruthy()
-          expect.assertions(1)
-        })
+        .catch((e) => expect(e).toBeTruthy())
     })
   })
 })

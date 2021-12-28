@@ -38,7 +38,6 @@ import {
   Query,
   Role,
   UpdateAccessControlInput,
-  AccessControlRole,
 } from '@island.is/skilavottord-web/graphql/schema'
 
 import {
@@ -187,7 +186,7 @@ const AccessControl: FC = () => {
     value: partner.companyId,
   }))
 
-  const roles = Object.keys(AccessControlRole)
+  const roles = Object.keys(Role)
     .filter((role) =>
       !isDeveloper(user?.role) ? role !== Role.developer : role,
     )

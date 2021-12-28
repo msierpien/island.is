@@ -12,12 +12,6 @@ export const getFileSizeInKilo = (file: { size?: number }) => {
   return Math.floor(file.size ? file.size / 1000 : 0)
 }
 
-export const firstDateOfMonth = () => {
-  const date = new Date()
-
-  return new Date(date.getFullYear(), date.getMonth(), 1)
-}
-
 export const currentMonth = () => {
   return months[new Date().getMonth()].toLowerCase()
 }

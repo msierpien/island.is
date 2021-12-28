@@ -10,14 +10,8 @@ export const GET_PROJECT_PAGE_QUERY = gql`
       theme
       sidebar
       sidebarLinks {
-        primaryLink {
-          text
-          url
-        }
-        childrenLinks {
-          text
-          url
-        }
+        text
+        url
       }
       subtitle
       intro

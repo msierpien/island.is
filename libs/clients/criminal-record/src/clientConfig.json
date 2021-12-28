@@ -10,7 +10,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/pdf/v1/Create/{personId}": {
+    "/api/pdf/Create/{personId}": {
       "get": {
         "tags": ["CrimeCertificate"],
         "summary": "Create pdf report for open criminal record",
@@ -47,7 +47,7 @@
         }
       }
     },
-    "/api/pdf/v1/Create/Personal/{personId}": {
+    "/api/pdf/Create/Personal/{personId}": {
       "get": {
         "tags": ["CrimeCertificate"],
         "summary": "Create pdf report for private record",

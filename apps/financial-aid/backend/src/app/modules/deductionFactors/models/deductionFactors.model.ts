@@ -10,7 +10,7 @@ import {
 
 import { ApiProperty } from '@nestjs/swagger'
 import { DeductionFactors } from '@island.is/financial-aid/shared/lib'
-import { AmountModel } from '../../amount/models/amount.model'
+import { AmountModel } from '../../amount'
 
 @Table({
   tableName: 'deductionFactors',

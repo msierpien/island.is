@@ -9,7 +9,7 @@ import {
 
 import { ApiProperty } from '@nestjs/swagger'
 
-import { ApplicationModel } from '../../application/models/application.model'
+import { ApplicationModel } from '../../application'
 
 import {
   ApplicationEventType,

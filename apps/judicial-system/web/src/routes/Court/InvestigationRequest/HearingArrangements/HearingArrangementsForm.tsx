@@ -356,32 +356,59 @@ const HearingArrangementsForm: React.FC<Props> = (props) => {
       </FormContentContainer>
       {modalVisible && (
         <Modal
-          title={formatMessage(m.modal.heading)}
+          title={formatMessage(
+            workingCase.sessionArrangements ===
+              SessionArrangements.REMOTE_SESSION
+              ? m.modal.remoteSessionHeading
+              : m.modal.heading,
+          )}
           text={formatMessage(
             workingCase.sessionArrangements === SessionArrangements.ALL_PRESENT
               ? m.modal.allPresentText
               : workingCase.sessionArrangements ===
                 SessionArrangements.ALL_PRESENT_SPOKESPERSON
               ? m.modal.allPresentSpokespersonText
-              : m.modal.prosecutorPresentText,
+              : workingCase.sessionArrangements ===
+                SessionArrangements.PROSECUTOR_PRESENT
+              ? m.modal.prosecutorPresentText
+              : m.modal.remoteSessionText,
           )}
           handlePrimaryButtonClick={async () => {
-            const notificationSent = await sendNotification(
-              workingCase.id,
-              NotificationType.COURT_DATE,
-            )
-
-            if (notificationSent) {
+            if (
+              workingCase.sessionArrangements ===
+              SessionArrangements.REMOTE_SESSION
+            ) {
               router.push(
                 `${Constants.IC_COURT_RECORD_ROUTE}/${workingCase.id}`,
               )
+            } else {
+              const notificationSent = await sendNotification(
+                workingCase.id,
+                NotificationType.COURT_DATE,
+              )
+
+              if (notificationSent) {
+                router.push(
+                  `${Constants.IC_COURT_RECORD_ROUTE}/${workingCase.id}`,
+                )
+              }
             }
           }}
           handleSecondaryButtonClick={() => {
             router.push(`${Constants.IC_COURT_RECORD_ROUTE}/${workingCase.id}`)
           }}
-          primaryButtonText={formatMessage(m.modal.primaryButtonText)}
-          secondaryButtonText={formatMessage(m.modal.secondaryButtonText)}
+          primaryButtonText={formatMessage(
+            workingCase.sessionArrangements ===
+              SessionArrangements.REMOTE_SESSION
+              ? m.modal.primaryButtonRemoteSessionText
+              : m.modal.primaryButtonText,
+          )}
+          secondaryButtonText={
+            workingCase.sessionArrangements ===
+            SessionArrangements.REMOTE_SESSION
+              ? undefined
+              : formatMessage(m.modal.secondaryButtonText)
+          }
           isPrimaryButtonLoading={isSendingNotification}
         />
       )}

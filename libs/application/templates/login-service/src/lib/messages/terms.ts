@@ -24,11 +24,6 @@ export const terms = {
       defaultMessage: 'Ég samþykki ofangreinda skilmála',
       description: 'Terms agreement approval',
     },
-    termsAgreementApprovalForOverview: {
-      id: `ls.application:section.terms.termsAgreementApprovalForOverview`,
-      defaultMessage: 'Skilmálar þjónustu samþykktir',
-      description: 'Terms agreement approval for overview',
-    },
     yesLabel: {
       id: `ls.application:section.terms.yesLabel`,
       defaultMessage: 'Já',

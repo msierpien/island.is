@@ -5,12 +5,7 @@ import {
   Req,
   HttpCode,
 } from '@nestjs/common'
-import {
-  ApiOkResponse,
-  ApiBody,
-  ApiExtraModels,
-  getSchemaPath,
-} from '@nestjs/swagger'
+import { ApiBody, ApiExtraModels, getSchemaPath } from '@nestjs/swagger'
 import { validate, ValidationError } from 'class-validator'
 import { Request } from 'express'
 import {
@@ -20,7 +15,6 @@ import {
   ValidatorTypeMap,
 } from './dto/createNotification.dto'
 import { InjectQueue, QueueService } from '@island.is/message-queue'
-import { CreateNotificationResponse } from './dto/createNotification.response'
 
 const throwIfError = (errors: ValidationError[]): void => {
   if (errors.length > 0) {
@@ -62,11 +56,8 @@ export class NotificationsController {
       oneOf: [{ $ref: getSchemaPath(NewDocumentMessage) }],
     },
   })
-  @ApiOkResponse({ type: CreateNotificationResponse })
   @HttpCode(201)
-  async createNotification(
-    @Req() req: Request,
-  ): Promise<CreateNotificationResponse> {
+  async createNotification(@Req() req: Request): Promise<{ id: string }> {
     const message = await validateMessage(req.body)
     const id = await this.queue.add(message)
     return { id }

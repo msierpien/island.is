@@ -1,7 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-import { AccessControlRole } from './accessControl.model'
-import type { AccessControlRoleType } from './accessControl.model'
+import { Role } from '../auth'
 
 @InputType()
 export class CreateAccessControlInput {
@@ -11,9 +10,10 @@ export class CreateAccessControlInput {
   @Field()
   name!: string
 
-  @Field(() => AccessControlRole)
-  role!: AccessControlRoleType
+  @Field(() => Role)
+  role!: Role
 
+  // TODO: get from samgongustofa
   @Field({ nullable: true })
   partnerId?: string
 }
@@ -26,9 +26,10 @@ export class UpdateAccessControlInput {
   @Field()
   name!: string
 
-  @Field(() => AccessControlRole)
-  role!: AccessControlRoleType
+  @Field(() => Role)
+  role!: Role
 
+  // TODO: get from samgongustofa
   @Field({ nullable: true })
   partnerId?: string
 }

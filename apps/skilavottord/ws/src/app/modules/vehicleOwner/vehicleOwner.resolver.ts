@@ -4,12 +4,12 @@ import { Args, Query, Resolver, Mutation } from '@nestjs/graphql'
 import type { Logger } from '@island.is/logging'
 import { LOGGER_PROVIDER } from '@island.is/logging'
 
-import { Authorize, CurrentUser, User, Role } from '../auth'
-
+import { Authorize, Role, CurrentUser } from '../auth'
+import type { User } from '../auth'
 import { VehicleOwnerModel } from './vehicleOwner.model'
 import { VehicleOwnerService } from './vehicleOwner.service'
 
-@Authorize()
+@Authorize({ throwOnUnAuthorized: false })
 @Resolver(() => VehicleOwnerModel)
 export class VehicleOwnerResolver {
   constructor(
@@ -27,6 +27,7 @@ export class VehicleOwnerResolver {
     return res
   }
 
+  //TODO find right name
   @Query(() => VehicleOwnerModel)
   async skilavottordVehiclesFromLocal(
     @CurrentUser() user: User,

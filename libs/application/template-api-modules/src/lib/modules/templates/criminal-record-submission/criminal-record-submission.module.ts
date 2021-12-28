@@ -6,7 +6,7 @@ import { BaseTemplateAPIModuleConfig } from '../../../types'
 
 import { CriminalRecordSubmissionService } from './criminal-record-submission.service'
 import { CriminalRecordModule } from '@island.is/api/domains/criminal-record'
-import { SyslumennClientModule } from '@island.is/clients/syslumenn'
+import { SyslumennModule } from '@island.is/api/domains/syslumenn'
 
 export class CriminalRecordSubmissionModule {
   static register(baseConfig: BaseTemplateAPIModuleConfig): DynamicModule {
@@ -15,7 +15,7 @@ export class CriminalRecordSubmissionModule {
       imports: [
         SharedTemplateAPIModule.register(baseConfig),
         CriminalRecordModule.register(baseConfig.criminalRecord),
-        SyslumennClientModule,
+        SyslumennModule.register(baseConfig.syslumenn),
       ],
       providers: [CriminalRecordSubmissionService],
       exports: [CriminalRecordSubmissionService],

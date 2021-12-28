@@ -1,7 +1,6 @@
 import { Module, HttpModule } from '@nestjs/common'
 
-import { RecyclingRequestModule } from '../recyclingRequest/recyclingRequest.module'
-
+import { RecyclingRequestModule } from '../recyclingRequest'
 import { SamgongustofaService } from './samgongustofa.service'
 import { SamgongustofaResolver } from './samgongustofa.resolver'
 

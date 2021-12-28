@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { SequelizeModule } from '@nestjs/sequelize'
 
-import { ApplicationModel } from './models/application.model'
+import { ApplicationModel } from './models'
 import { ApplicationEventModule } from '../applicationEvent'
 import { EmailModule } from '@island.is/email-service'
 import { ApplicationController } from './application.controller'
@@ -16,11 +16,11 @@ import { AmountModule } from '../amount'
   imports: [
     FileModule,
     EmailModule.register(environment.emailOptions),
-    StaffModule,
     ApplicationEventModule,
+    SequelizeModule.forFeature([ApplicationModel]),
+    StaffModule,
     MunicipalityModule,
     AmountModule,
-    SequelizeModule.forFeature([ApplicationModel]),
   ],
   providers: [ApplicationService],
   controllers: [ApplicationController],

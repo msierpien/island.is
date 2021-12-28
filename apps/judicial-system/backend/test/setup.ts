@@ -74,6 +74,7 @@ jest.mock('stream-buffers', function () {
   }
 
   return {
+    ReadableStreamBuffer: jest.fn(),
     WritableStreamBuffer: MockWritableStreamBuffer,
   }
 })

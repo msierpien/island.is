@@ -1,3 +1,4 @@
-export { User, Role } from './user.model'
-export { CurrentUser } from './currentUser.decorator'
+export type { AuthUser, User } from './auth.types'
+export { Role } from './auth.types'
 export { Authorize } from './auth.guard'
+export { CurrentUser } from './auth.decorator'

@@ -233,6 +233,9 @@
     "application-templates-login-service": {
       "tags": []
     },
+    "application-templates-meta-application": {
+      "tags": []
+    },
     "application-templates-parental-leave": {
       "tags": []
     },
@@ -286,9 +289,6 @@
     "clients-criminal-record": {
       "tags": []
     },
-    "clients-data-protection-complaint": {
-      "tags": []
-    },
     "clients-document-provider": {
       "tags": []
     },
@@ -332,9 +332,6 @@
       "tags": []
     },
     "clients-rsk-v2": {
-      "tags": []
-    },
-    "clients-syslumenn": {
       "tags": []
     },
     "clients-vmst": {

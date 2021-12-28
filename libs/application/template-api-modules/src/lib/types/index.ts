@@ -10,7 +10,6 @@ import {
   PaymentScheduleType,
 } from '@island.is/api/schema'
 import { HealthInsuranceV2Options } from '@island.is/clients/health-insurance-v2'
-import { DataProtectionComplaintClientConfig } from '@island.is/clients/data-protection-complaint'
 
 export interface BaseTemplateAPIModuleConfig {
   xRoadBasePathWithEnv: string
@@ -24,6 +23,11 @@ export interface BaseTemplateAPIModuleConfig {
     }
   }
   baseApiUrl: string
+  syslumenn: {
+    url: string
+    username: string
+    password: string
+  }
   email: {
     sender: string
     address: string
@@ -43,7 +47,6 @@ export interface BaseTemplateAPIModuleConfig {
   }
   paymentScheduleConfig: PaymentScheduleServiceOptions
   healthInsuranceV2: HealthInsuranceV2Options
-  dataProtectionComplaint: DataProtectionComplaintClientConfig
 }
 
 export interface TemplateApiModuleActionProps {

@@ -639,10 +639,13 @@ function constructInvestigationRulingPdf(
     })
     .text(' ')
     .font('Times-Roman')
-    .text(formatMessage(ruling.rulingTextIntro), {
+
+  if (existingCase.sessionArrangements !== SessionArrangements.REMOTE_SESSION) {
+    doc.text(' ').text(formatMessage(ruling.rulingTextIntro), {
       align: 'justify',
       paragraphGap: 1,
     })
+  }
 
   if (existingCase.sessionArrangements === SessionArrangements.ALL_PRESENT) {
     doc.text(' ').text(formatMessage(ruling.appealDirections), {
@@ -685,7 +688,10 @@ function constructInvestigationRulingPdf(
     doc.text(' ').text(accusedAppeal, { align: 'justify', paragraphGap: 1 })
   }
 
-  if (existingCase.registrar) {
+  if (
+    existingCase.registrar &&
+    existingCase.sessionArrangements !== SessionArrangements.REMOTE_SESSION
+  ) {
     doc.text(' ').text(
       formatMessage(ruling.registrarWitness, {
         registrarNameAndTitle: `${existingCase.registrar.name} ${existingCase.registrar.title}`,
@@ -733,27 +739,6 @@ export async function getRulingPdfAsString(
   const pdf = await new Promise<string>(function (resolve) {
     stream.on('finish', () => {
       resolve(stream.getContentsAsString('binary') as string)
-    })
-  })
-
-  if (!environment.production) {
-    writeFile(`${existingCase.id}-ruling.pdf`, pdf)
-  }
-
-  return pdf
-}
-
-export async function getRulingPdfAsBuffer(
-  existingCase: Case,
-  formatMessage: FormatMessage,
-  shortVersion: boolean,
-): Promise<Buffer> {
-  const stream = constructRulingPdf(existingCase, formatMessage, shortVersion)
-
-  // wait for the writing to finish
-  const pdf = await new Promise<Buffer>(function (resolve) {
-    stream.on('finish', () => {
-      resolve(stream.getContents() as Buffer)
     })
   })
 

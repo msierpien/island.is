@@ -87,9 +87,5 @@ export async function getCasefilesPdfAsBuffer(
     })
   })
 
-  if (!environment.production) {
-    writeFile(`${existingCase.id}-case-files.pdf`, pdf)
-  }
-
   return pdf
 }

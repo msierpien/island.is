@@ -21,7 +21,7 @@ const GeneralPetitionApplicationTemplate: ApplicationTemplate<
   type: ApplicationTypes.GENERAL_PETITION,
   name: 'Meðmælendalisti',
   dataSchema: GeneralPetitionSchema,
-  readyForProduction: true,
+  readyForProduction: false,
   stateMachineConfig: {
     initial: States.DRAFT,
     states: {
@@ -79,15 +79,7 @@ const GeneralPetitionApplicationTemplate: ApplicationTemplate<
                 import('../forms/EndorsementForm').then((val) =>
                   Promise.resolve(val.EndorsementForm),
                 ),
-              read: {
-                answers: [
-                  'documents',
-                  'listName',
-                  'aboutList',
-                  'dateTil',
-                  'dateFrom',
-                ],
-              },
+              read: 'all',
             },
           ],
         },
@@ -95,10 +87,13 @@ const GeneralPetitionApplicationTemplate: ApplicationTemplate<
       },
     },
   },
-  mapUserToRole(nationalId: string, application: Application) {
+  mapUserToRole(
+    nationalId: string,
+    application: Application,
+  ): ApplicationRole | undefined {
     if (application.applicant === nationalId) {
       return Roles.APPLICANT
-    } else if (application.state === States.APPROVED) {
+    } else {
       return Roles.SIGNATUREE
     }
   },

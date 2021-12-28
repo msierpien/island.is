@@ -28,11 +28,11 @@ import type { User as TUser } from '@island.is/judicial-system/types'
 import { environment } from '../../../environments'
 import {
   getRequestPdfAsBuffer,
+  getRequestPdfAsString,
   getRulingPdfAsString,
   getCasefilesPdfAsString,
   writeFile,
-  getRulingPdfAsBuffer,
-  getCustodyNoticePdfAsBuffer,
+  getCustodyNoticePdfAsString,
 } from '../../formatters'
 import { notificationMessages as m } from '../../messages'
 import { FileService } from '../file/file.service'
@@ -87,7 +87,8 @@ const standardIncludes: Includeable[] = [
 @Injectable()
 export class CaseService {
   constructor(
-    @InjectModel(Case) private readonly caseModel: typeof Case,
+    @InjectModel(Case)
+    private readonly caseModel: typeof Case,
     private readonly userService: UserService,
     private readonly fileService: FileService,
     private readonly awsS3Service: AwsS3Service,
@@ -95,7 +96,8 @@ export class CaseService {
     private readonly signingService: SigningService,
     private readonly emailService: EmailService,
     private readonly intlService: IntlService,
-    @Inject(LOGGER_PROVIDER) private readonly logger: Logger,
+    @Inject(LOGGER_PROVIDER)
+    private readonly logger: Logger,
   ) {}
 
   private async uploadSignedRulingPdfToS3(
@@ -437,7 +439,7 @@ export class CaseService {
     return { numberOfAffectedRows, updatedCase }
   }
 
-  async getRequestPdf(existingCase: Case): Promise<Buffer> {
+  async getRequestPdf(existingCase: Case): Promise<string> {
     this.logger.debug(
       `Getting the request for case ${existingCase.id} as a pdf document`,
     )
@@ -447,16 +449,17 @@ export class CaseService {
       'is',
     )
 
-    return getRequestPdfAsBuffer(existingCase, intl.formatMessage)
+    return getRequestPdfAsString(existingCase, intl.formatMessage)
   }
 
-  async getCourtRecordPdf(existingCase: Case): Promise<Buffer> {
+  async getCourtRecordPdf(existingCase: Case): Promise<string> {
     this.logger.debug(
       `Getting the court record for case ${existingCase.id} as a pdf document`,
     )
 
     const pdf = await this.awsS3Service
       .getObject(`generated/${existingCase.id}/courtRecord.pdf`)
+      .then((res) => res.toString('binary'))
       .catch(() => undefined)
 
     if (pdf) {
@@ -468,16 +471,17 @@ export class CaseService {
       'is',
     )
 
-    return getRulingPdfAsBuffer(existingCase, intl.formatMessage, true)
+    return getRulingPdfAsString(existingCase, intl.formatMessage, true)
   }
 
-  async getRulingPdf(existingCase: Case): Promise<Buffer> {
+  async getRulingPdf(existingCase: Case): Promise<string> {
     this.logger.debug(
       `Getting the ruling for case ${existingCase.id} as a pdf document`,
     )
 
     const pdf = await this.awsS3Service
       .getObject(`generated/${existingCase.id}/ruling.pdf`)
+      .then((res) => res.toString('binary'))
       .catch(() => undefined)
 
     if (pdf) {
@@ -489,15 +493,15 @@ export class CaseService {
       'is',
     )
 
-    return getRulingPdfAsBuffer(existingCase, intl.formatMessage, false)
+    return getRulingPdfAsString(existingCase, intl.formatMessage, false)
   }
 
-  async getCustodyPdf(existingCase: Case): Promise<Buffer> {
+  async getCustodyPdf(existingCase: Case): Promise<string> {
     this.logger.debug(
       `Getting the custody notice for case ${existingCase.id} as a pdf document`,
     )
 
-    return getCustodyNoticePdfAsBuffer(existingCase)
+    return getCustodyNoticePdfAsString(existingCase)
   }
 
   async requestCourtRecordSignature(

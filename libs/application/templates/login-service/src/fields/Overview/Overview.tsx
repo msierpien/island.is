@@ -41,7 +41,7 @@ export const Overview = ({ application }: FieldBaseProps) => {
         {formatMessage(terms.general.pageTitle)}
       </Text>
       <ValueLine
-        title={terms.labels.termsAgreementApprovalForOverview}
+        title={terms.labels.termsAgreementApproval}
         value={formatMessage(terms.labels.yesLabel)}
       />
       <Text variant="h2" marginBottom={3}>

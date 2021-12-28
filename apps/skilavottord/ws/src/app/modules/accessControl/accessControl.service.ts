@@ -3,8 +3,9 @@ import { Injectable } from '@nestjs/common'
 import { Op } from 'sequelize'
 
 import { RecyclingPartnerModel } from '../recyclingPartner'
+import { Role } from '../auth'
 
-import { AccessControlModel, AccessControlRole } from './accessControl.model'
+import { AccessControlModel } from './accessControl.model'
 import {
   CreateAccessControlInput,
   DeleteAccessControlInput,
@@ -20,9 +21,7 @@ export class AccessControlService {
 
   async findAll(isDeveloper: boolean): Promise<AccessControlModel[]> {
     return this.accessControlModel.findAll({
-      where: isDeveloper
-        ? {}
-        : { role: { [Op.not]: AccessControlRole.developer } },
+      where: isDeveloper ? {} : { role: { [Op.not]: Role.developer } },
       include: [
         {
           model: RecyclingPartnerModel,
@@ -62,7 +61,7 @@ export class AccessControlService {
 
   async deleteAccess({
     nationalId,
-  }: DeleteAccessControlInput): Promise<boolean> {
+  }: DeleteAccessControlInput): Promise<Boolean> {
     const affectedRows = await this.accessControlModel.destroy({
       where: { nationalId },
     })

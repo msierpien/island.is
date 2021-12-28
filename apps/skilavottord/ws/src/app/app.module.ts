@@ -7,6 +7,7 @@ import { BASE_PATH } from '@island.is/skilavottord/consts'
 import {
   AccessControlModule,
   AuthModule,
+  UserModule,
   GdprModule,
   VehicleModule,
   RecyclingRequestModule,
@@ -35,9 +36,10 @@ const autoSchemaFile = environment.production
     SequelizeModule.forRootAsync({
       useClass: SequelizeConfigService,
     }),
-    AuthModule,
     AccessControlModule,
     RecyclingRequestModule,
+    AuthModule,
+    UserModule,
     SamgongustofaModule,
     FjarsyslaModule,
     GdprModule,

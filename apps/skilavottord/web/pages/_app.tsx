@@ -5,7 +5,7 @@ import React from 'react'
 import App from 'next/app'
 import { AppProps } from 'next/app'
 import getConfig from 'next/config'
-import { Provider } from 'next-auth/client'
+import NextCookies from 'next-cookies'
 
 import { ApolloProvider } from '@apollo/client'
 import * as Sentry from '@sentry/node'
@@ -15,6 +15,7 @@ import { withHealthchecks } from '../units/Healthchecks/withHealthchecks'
 import { client as initApollo } from '../graphql'
 import { AppLayout } from '../components/Layouts'
 import { appWithTranslation } from '../i18n'
+import { isAuthenticated } from '../auth/utils'
 
 const {
   publicRuntimeConfig: { SENTRY_DSN },
@@ -24,7 +25,11 @@ Sentry.init({
   dsn: SENTRY_DSN,
 })
 
-class Skilavottord extends App<AppProps> {
+interface Props extends AppProps {
+  isAuthenticated: boolean
+}
+
+class SupportApplication extends App<Props> {
   static async getInitialProps(appContext: any) {
     const { Component, ctx } = appContext
     const apolloClient = initApollo({})
@@ -36,9 +41,15 @@ class Skilavottord extends App<AppProps> {
 
     const apolloState = apolloClient.cache.extract()
 
+    const readonlyCookies = NextCookies(appContext)
+    Sentry.configureScope((scope) => {
+      scope.setContext('cookies', readonlyCookies)
+    })
+
     return {
       pageProps,
       apolloState,
+      isAuthenticated: isAuthenticated(appContext.ctx),
     }
   }
 
@@ -50,7 +61,7 @@ class Skilavottord extends App<AppProps> {
   }
 
   render() {
-    const { Component, pageProps, router } = this.props
+    const { Component, pageProps, isAuthenticated, router } = this.props
 
     Sentry.configureScope((scope) => {
       scope.setExtra('lang', this.getLanguage(router.pathname))
@@ -73,23 +84,19 @@ class Skilavottord extends App<AppProps> {
     })
 
     return (
-      <Provider
-        session={pageProps.session}
-        options={{ clientMaxAge: 120, basePath: '/app/skilavottord/api/auth' }}
-      >
-        <ApolloProvider client={initApollo(pageProps.apolloState)}>
-          <AppLayout>
-            <Component {...pageProps} />
-          </AppLayout>
-        </ApolloProvider>
-      </Provider>
+      <ApolloProvider client={initApollo(pageProps.apolloState)}>
+        <AppLayout isAuthenticated={isAuthenticated}>
+          <Component {...pageProps} />
+        </AppLayout>
+      </ApolloProvider>
     )
   }
 }
 
 const { serverRuntimeConfig } = getConfig()
-const { graphqlEndpoint } = serverRuntimeConfig
+const { graphqlEndpoint, apiUrl } = serverRuntimeConfig
+const externalEndpointDependencies = [graphqlEndpoint, apiUrl]
 
 export default appWithTranslation(
-  withHealthchecks([graphqlEndpoint])(Skilavottord),
+  withHealthchecks(externalEndpointDependencies)(SupportApplication),
 )

@@ -8,7 +8,7 @@ import {
   Person,
   Attachment,
   PersonType,
-} from '@island.is/clients/syslumenn'
+} from '@island.is/api/domains/syslumenn'
 import { generateSyslumennNotificationEmail } from './emailGenerators/syslumennNotification'
 import { Application } from '@island.is/application/core'
 import { NationalRegistry, UserProfile } from './types'
@@ -78,10 +78,6 @@ export class CriminalRecordSubmissionService {
     const sealedRecordResponse = await this.syslumennService.sealCriminalRecord(
       record.contentBase64,
     )
-
-    if (!sealedRecordResponse?.skjal) {
-      throw new Error('Eitthvað fór úrskeiðis.')
-    }
 
     const sealedRecord: CriminalRecord = {
       contentBase64: sealedRecordResponse.skjal,

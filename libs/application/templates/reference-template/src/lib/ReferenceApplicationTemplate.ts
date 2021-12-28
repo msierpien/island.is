@@ -222,15 +222,13 @@ const ReferenceApplicationTemplate: ApplicationTemplate<
     },
   },
   mapUserToRole(
-    nationalId: string,
+    id: string,
     application: Application,
   ): ApplicationRole | undefined {
-    if (application.applicant === nationalId) {
-      if (application.state === 'inReview') {
-        return Roles.ASSIGNEE
-      }
-      return Roles.APPLICANT
+    if (application.state === 'inReview') {
+      return Roles.ASSIGNEE
     }
+    return Roles.APPLICANT
   },
 }
 

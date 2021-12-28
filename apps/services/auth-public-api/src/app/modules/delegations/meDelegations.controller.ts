@@ -132,14 +132,6 @@ export class MeDelegationsController {
     type: 'string',
     description: 'Delegation ID.',
   })
-  @ApiQuery({
-    name: 'valid',
-    required: false,
-    schema: {
-      enum: Object.values(DelegationValidity),
-      default: DelegationValidity.ALL,
-    },
-  })
   @ApiOkResponse({ type: DelegationDTO })
   @ApiNotFoundResponse({ type: HttpProblemResponse })
   @ApiForbiddenResponse({ type: HttpProblemResponse })
@@ -151,12 +143,10 @@ export class MeDelegationsController {
   async findOne(
     @CurrentUser() user: User,
     @Param('delegationId') delegationId: string,
-    @Query('valid') valid: DelegationValidity = DelegationValidity.ALL,
   ): Promise<DelegationDTO | null> {
     const delegation = await this.delegationsService.findById(
       user.nationalId,
       delegationId,
-      valid,
     )
 
     if (!delegation) {

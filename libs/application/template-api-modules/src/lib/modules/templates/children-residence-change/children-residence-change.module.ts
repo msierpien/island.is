@@ -4,7 +4,7 @@ import {
   ChildrenResidenceChangeService,
   PRESIGNED_BUCKET,
 } from './children-residence-change.service'
-import { SyslumennClientModule } from '@island.is/clients/syslumenn'
+import { SyslumennModule } from '@island.is/api/domains/syslumenn'
 import { SharedTemplateAPIModule } from '../../shared'
 import { SmsModule } from '@island.is/nova-sms'
 
@@ -13,7 +13,7 @@ export class ChildrenResidenceChangeModule {
     return {
       module: ChildrenResidenceChangeModule,
       imports: [
-        SyslumennClientModule,
+        SyslumennModule.register(config.syslumenn),
         SharedTemplateAPIModule.register(config),
         SmsModule.register(config.smsOptions),
       ],

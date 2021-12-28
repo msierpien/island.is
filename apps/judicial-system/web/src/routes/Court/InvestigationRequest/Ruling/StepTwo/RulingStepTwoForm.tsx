@@ -360,7 +360,11 @@ const RulingStepTwoForm: React.FC<Props> = (props) => {
                       name="prosecutor-appeal-decision"
                       id="prosecutor-postpone"
                       label={formatMessage(
-                        m.sections.appealDecision.prosecutorPostpone,
+                        workingCase.sessionArrangements ===
+                          SessionArrangements.REMOTE_SESSION
+                          ? m.sections.appealDecision
+                              .prosecutorPostponeInRemoteSession
+                          : m.sections.appealDecision.prosecutorPostpone,
                       )}
                       value={CaseAppealDecision.POSTPONE}
                       checked={

@@ -1,28 +1,24 @@
 import React, { FC, ReactNode, useState } from 'react'
 import Head from 'next/head'
-import { useSession } from 'next-auth/client'
+import { Header } from '../../components'
 
-import { AuthSession } from '@island.is/next-ids-auth'
 import { Page, GridContainer } from '@island.is/island-ui/core'
-
 import { UserContext } from '@island.is/skilavottord-web/context'
 import { User } from '@island.is/skilavottord-web/graphql/schema'
 import { BASE_PATH } from '@island.is/skilavottord/consts'
 
-import { Header } from '../../components'
-
 interface LayoutProps {
   children: ReactNode
+  isAuthenticated?: boolean
 }
 
-export const AppLayout: FC<LayoutProps> = ({ children }) => {
+export const AppLayout: FC<LayoutProps> = ({
+  children,
+  isAuthenticated = false,
+}) => {
   const [user, setUser] = useState<User>()
-  const [session]: AuthSession = useSession()
-
   return (
-    <UserContext.Provider
-      value={{ isAuthenticated: Boolean(session?.user), user, setUser }}
-    >
+    <UserContext.Provider value={{ isAuthenticated, user, setUser }}>
       <Page>
         <Head>
           <link

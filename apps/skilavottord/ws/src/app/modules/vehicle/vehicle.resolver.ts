@@ -4,12 +4,12 @@ import { Query, Resolver, Mutation, Args } from '@nestjs/graphql'
 import type { Logger } from '@island.is/logging'
 import { LOGGER_PROVIDER } from '@island.is/logging'
 
-import { Authorize, CurrentUser, User, Role } from '../auth'
-
+import { Authorize, Role, CurrentUser } from '../auth'
+import type { User } from '../auth'
 import { VehicleModel } from './vehicle.model'
 import { VehicleService } from './vehicle.service'
 
-@Authorize()
+@Authorize({ throwOnUnAuthorized: false })
 @Resolver(() => VehicleModel)
 export class VehicleResolver {
   constructor(

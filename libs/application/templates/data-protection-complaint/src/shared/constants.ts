@@ -1,6 +1,10 @@
 export const YES = 'yes'
 export const NO = 'no'
 
+export enum API_MODULE {
+  sendApplication = 'sendApplication',
+}
+
 export const FILE_SIZE_LIMIT = 10000000
 
 export enum SubjectOfComplaint {
@@ -16,21 +20,4 @@ export enum SubjectOfComplaint {
   VANSKILASKRA = 'vanskilaskra',
   VIDEO_RECORDINGS = 'videoRecordings',
   OTHER = 'other',
-}
-
-export enum Roles {
-  APPLICANT = 'applicant',
-  ASSIGNEE = 'assignee',
-}
-export enum TEMPLATE_API_ACTIONS {
-  // Has to match name of action in template API module
-  // (will be refactored when state machine is a part of API module)
-  sendApplication = 'sendApplication',
-}
-
-export enum OnBehalf {
-  MYSELF = 'myself',
-  MYSELF_AND_OR_OTHERS = 'myselfAndOrOthers',
-  OTHERS = 'others',
-  ORGANIZATION_OR_INSTITUTION = 'organizationOrInsititution',
 }

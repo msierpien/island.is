@@ -159,13 +159,11 @@ export class DelegationsService {
    * Finds a single delegation for a user.
    * @param nationalId Id of the user to find the delegation from.
    * @param id Id of the delegation to find.
-   * @param valid Filter which scopes to return.
    * @returns
    */
   async findById(
     nationalId: string,
     id: string,
-    valid = DelegationValidity.ALL,
   ): Promise<DelegationDTO | null> {
     this.logger.debug(`Finding a delegation with id ${id}`)
     const delegation = await this.delegationModel.findOne({
@@ -177,8 +175,6 @@ export class DelegationsService {
         {
           model: DelegationScope,
           as: 'delegationScopes',
-          required: false,
-          where: this.getScopeValidWhereClause(valid),
           include: [
             {
               model: ApiScope,
